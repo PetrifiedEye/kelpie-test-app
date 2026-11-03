@@ -31,7 +31,7 @@ npx expo run:android
 
 `npx expo run:android` generates `android/` (gitignored), installs the development build, and starts Metro. Package name: `com.kelpie.testtask`. Later launches can use `npx expo start` and the already installed development build.
 
-On macOS the iOS equivalent is `npx expo run:ios`. That command was not run for this checkout. See [Platforms](#platforms).
+These changes were not tested on iOS. A Mac can still try them with the iOS Simulator development build attached to the [v1.0.0 GitHub release](https://github.com/PetrifiedEye/kelpie-test-app/releases/tag/v1.0.0) (`kelpie-test-app-ios-simulator.tar.gz`). See [Platforms](#platforms).
 
 An Android emulator reaches the host mock at `http://10.0.2.2:8787`. An iOS simulator uses `http://127.0.0.1:8787`. Those are the defaults when `expo.extra.mockApiUrl` in `app.json` is empty. `adb reverse` is not required for the emulator default.
 
@@ -67,9 +67,32 @@ Client tests cover the saved idempotency key, one job after a lost acknowledgeme
 | Platform | What ran | Result |
 | --- | --- | --- |
 | Android | Development build `com.kelpie.testtask` on an Android emulator (Pixel 10a) on this Windows host | The app opened. A ready report (two charges, 151.99 AUD/мес.) and the Diagnostics screen were captured in `artifacts/ready-details.png` and `artifacts/diagnostics.png`. The acceptance matrix is in [artifacts/matrix/android-matrix.mkv](artifacts/matrix/android-matrix.mkv). The emulator system-image version was not recorded. |
-| iOS | Nothing | No `ios/` project exists here, and this host cannot build the native iOS client. iOS is unverified. There is no iOS recording. |
+| iOS | Nothing on this host | Changes in this checkout were not tested on iOS. There is no iOS recording. A Mac can install the simulator development build from the GitHub release and connect it to Metro. |
 
 The Android recording covers the happy path, local rejection of `spoofed.pdf` and `oversize.csv` before any POST, `lost_ack` followed by a relaunch, `stale_status`, and `delete_failure`. Stills from the same run are in `artifacts/matrix/`.
+
+### iOS on a Mac
+
+Changes in this checkout were not tested on iOS. There is no iOS recording. A Mac with Xcode can still try them.
+
+The EAS `development-simulator` profile produced `kelpie-test-app-ios-simulator.tar.gz` on the [v1.0.0 release](https://github.com/PetrifiedEye/kelpie-test-app/releases/tag/v1.0.0), from commit `d0bac64`. Build log: [30e5c1f9-1017-492e-9bad-c4575f17c905](https://expo.dev/accounts/yab-personal/projects/kelpie-test-task/builds/30e5c1f9-1017-492e-9bad-c4575f17c905). The archive is an unsigned Expo development client for the iOS Simulator. It is not a build for a physical iPhone, and it was not launched as part of this review.
+
+On macOS, with Xcode and a booted iOS Simulator:
+
+1. Download `kelpie-test-app-ios-simulator.tar.gz`.
+2. Unpack it and install the app:
+
+```bash
+tar -xzf kelpie-test-app-ios-simulator.tar.gz
+xcrun simctl install booted kelpietestapp.app
+```
+
+3. Check out this release.
+4. Start the mock from `mobile-engineer-kit` with `npm start`.
+5. In `kelpie-test-app`, run `npm install`, then `npx expo start`.
+6. Open the installed app in the Simulator and connect to the bundler URL.
+
+`npx expo run:ios` compiles a new native app and does not use this archive. Expo Go cannot load this project.
 
 ## Permissions
 
