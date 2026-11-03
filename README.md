@@ -66,7 +66,7 @@ Client tests cover the saved idempotency key, one job after a lost acknowledgeme
 
 | Platform | What ran | Result |
 | --- | --- | --- |
-| Android | Development build `com.kelpie.testtask` on an Android emulator (Pixel 10a) on this Windows host | The app opened. A ready report (two charges, 151.99 AUD/month) and the Diagnostics screen were captured in `artifacts/ready-details.png` and `artifacts/diagnostics.png`. The acceptance matrix is in [artifacts/matrix/android-matrix.mkv](artifacts/matrix/android-matrix.mkv). The emulator system-image version was not recorded. |
+| Android | Development build `com.kelpie.testtask` on an Android emulator (Pixel 10a) on this Windows host | The app opened. A ready report (two charges, 151.99 AUD/мес.) and the Diagnostics screen were captured in `artifacts/ready-details.png` and `artifacts/diagnostics.png`. The acceptance matrix is in [artifacts/matrix/android-matrix.mkv](artifacts/matrix/android-matrix.mkv). The emulator system-image version was not recorded. |
 | iOS | Nothing | No `ios/` project exists here, and this host cannot build the native iOS client. iOS is unverified. There is no iOS recording. |
 
 The Android recording covers the happy path, local rejection of `spoofed.pdf` and `oversize.csv` before any POST, `lost_ack` followed by a relaunch, `stale_status`, and `delete_failure`. Stills from the same run are in `artifacts/matrix/`.
